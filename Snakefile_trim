@@ -1,0 +1,14 @@
+rule all: 
+	input:
+		expand("{sample}_trimmed_1.fastq", sample=config["samples"])
+		
+rule fastp:
+	input:
+		sample_1="{sample}_1.fastq", 
+		sample_2="{sample}_2.fastq"
+	output:
+		sample_1="{sample}_trimmed_1.fastq",
+		sample_2="{sample}_trimmed_2.fastq",
+		html="{sample}.html"
+	shell:
+		"fastp -i {input.sample_1} -I {input.sample_2} -o {output.sample_1} -O {output.sample_2} -h {output.html}"
